@@ -87,80 +87,6 @@ public class ProjectExcelReader {
     }
 
 
-    //Import Code
-  /*  public List<Project> uploadProjectsFromExcel(List<MultipartFile> filePath) throws IOException {
-        List<Project> ProjectList = new ArrayList<>();
-        List<Task> tasklList = new ArrayList<>();
-        List<SubTask> subtasklist = new ArrayList<>();
-
-
-        filePath.stream().forEach(excelFile ->{
-            Workbook workbook = null;
-            try {
-                workbook = new XSSFWorkbook(excelFile.getInputStream());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Sheet datatypeSheet = workbook.getSheetAt(0);
-
-            for (Row currentRow : datatypeSheet) {
-                if (currentRow.getRowNum() == 0) { // Skip header row
-                    continue;
-                }
-                Project project = new Project();
-                Task task = new Task();
-                SubTask subTask = new SubTask();
-
-                Cell projectIDCell = currentRow.getCell(0);
-                if (projectIDCell != null) {
-                    project.setP_id((long) projectIDCell.getNumericCellValue());
-                }
-
-                Cell projectNameCell = currentRow.getCell(1);
-                if (projectNameCell != null) {
-                    project.setProject_name(projectNameCell.getStringCellValue());
-                }
-
-                Cell taskNameCell = currentRow.getCell(2);
-
-
-                if (taskNameCell != null) {
-                    task.setTask_name(taskNameCell.getStringCellValue());
-                }else {
-                    task.setTask_name("");
-                }
-
-
-
-
-                Cell subTaskNameCell = currentRow.getCell(3);
-                if (subTaskNameCell != null ) {
-                    subTask.setSubtask_name(subTaskNameCell.getStringCellValue());
-                }else {
-                    subTask.setSubtask_name("");
-                }
-
-                // Save to database
-
-
-
-                project.setTask(tasklList);
-
-
-                projectRepo.save(project);
-
-
-
-
-            }
-
-
-        });
-
-
-        return ProjectList;
-    }*/
-
 
 
     @Transactional // Ensure all operations are transactional
@@ -177,7 +103,7 @@ public class ProjectExcelReader {
                     }
 
                     // Retrieve project details from the Excel row
-                    long projectId = (long) currentRow.getCell(0).getNumericCellValue();
+                    String projectId =  currentRow.getCell(0).getStringCellValue();
                     String projectName = currentRow.getCell(1).getStringCellValue();
 
                     // Retrieve task details from the Excel row
@@ -207,6 +133,7 @@ public class ProjectExcelReader {
                     Task task = optionalTask.orElseGet(() -> {
                         Task newTask = new Task();
                         newTask.setTask_name(taskName);
+                        taskRepo.save(newTask);
                         project.getTask().add(newTask);
                         return newTask;
                     });
@@ -214,7 +141,8 @@ public class ProjectExcelReader {
                     // Create a new subtask and add it to the task
                     SubTask subTask = new SubTask();
                     subTask.setSubtask_name(subtaskName);
-                    task.getSubtask().add(subTask);
+                    subrepo.save(subTask);
+                    
                 }
             } catch (IOException e) {
                 e.printStackTrace(); // Handle or log the exception
@@ -222,6 +150,7 @@ public class ProjectExcelReader {
         }
 
         // Save projects to the database
+        taskRepo.save(new Task());
         projectRepo.saveAll(projectList);
         return projectList;
     }

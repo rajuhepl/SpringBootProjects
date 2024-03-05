@@ -77,7 +77,7 @@ public class ExcelReader {
                 while (rowIterator.hasNext()){
                     Row row = rowIterator.next();
                     Users user = new Users();
-                    user.setId((long)row.getCell(0).getNumericCellValue());
+                    user.setId(row.getCell(0).getStringCellValue());
                     user.setName(row.getCell(1).getStringCellValue());
                     user.setEmail(row.getCell(2).getStringCellValue());
                     user.setPhone_number(String.valueOf((long)row.getCell(3).getNumericCellValue()));

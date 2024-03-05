@@ -1,22 +1,23 @@
 package com.filehandling.FileHandling.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
-@Entity
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
+
+@Document
 public class SubTask {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long subtask_id;
+    private String subtask_id;
     private String subtask_name;
 
-    public Long getSubtask_id() {
+
+    public String getSubtask_id() {
         return subtask_id;
     }
 
-    public void setSubtask_id(Long subtask_id) {
+    public void setSubtask_id(String subtask_id) {
         this.subtask_id = subtask_id;
     }
 

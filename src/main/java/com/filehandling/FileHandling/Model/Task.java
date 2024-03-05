@@ -1,25 +1,26 @@
 package com.filehandling.FileHandling.Model;
 
-import jakarta.persistence.*;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Document
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long task_id;
+    private String task_id;
     private String task_name;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "task_id" , referencedColumnName = "task_id")
+    @DocumentReference
     private List<SubTask> subtask;
 
-    public Long getTask_id() {
+    public String getTask_id() {
         return task_id;
     }
 
-    public void setTask_id(Long task_id) {
+    public void setTask_id(String task_id) {
         this.task_id = task_id;
     }
 

@@ -1,23 +1,23 @@
 package com.filehandling.FileHandling.Model;
 
-import jakarta.persistence.*;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Entity
-@Table(name="room")
+@Document
 public class Rooms {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int room_id;
+    private String room_id;
     private String room_no;
     private String Size;
 
-    public int getRoom_id() {
+    public String getRoom_id() {
         return room_id;
     }
 
-    public void setRoom_id(int room_id) {
+    public void setRoom_id(String room_id) {
         this.room_id = room_id;
     }
 
